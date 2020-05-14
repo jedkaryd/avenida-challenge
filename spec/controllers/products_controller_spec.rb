@@ -3,31 +3,30 @@ require 'rails_helper'
 RSpec.describe Api::V1::ProductsController, type: :controller do
   describe 'GET #index' do
     context 'when there are products created' do
-      let!(:products) { create_list(:product, 5) }
-
       before do
+        create_list(:product, 5)
+        create_list(:product, 2, state: 'hidden')
         get :index
       end
 
+      let(:visible_products_count) { 5 }
+
       it 'responds with a not empty array' do
-        expected = JSON.parse(response.body)
-        expect(expected).not_to be_empty
+        expect(response_body).not_to be_empty
       end
 
-      it 'responds with the lists of product' do
-        expected = ActiveModel::Serializer::CollectionSerializer.new(
-          products, serializer: ProductSerializer
-        ).to_json
-        expect(response.body).to eq expected
+      it 'responds with the list of visible products' do
+        response_body.each do |product|
+          expect(product[:state]).to eq('visible')
+        end
       end
 
       it 'responds with 200 status' do
         expect(response).to have_http_status(:ok)
       end
 
-      it 'responds with all the products' do
-        expected = JSON.parse(response.body)
-        expect(expected.length).to eq products.count
+      it 'responds with all visible the products' do
+        expect(response_body.length).to eq visible_products_count
       end
     end
 
@@ -35,8 +34,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       before { get :index }
 
       it 'returns an empty array' do
-        expected = JSON.parse(response.body)
-        expect(expected).to eq([])
+        expect(response_body).to eq([])
       end
 
       it 'responds with status ok' do
@@ -70,8 +68,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       end
 
       it 'responds with an error message' do
-        expected = JSON.parse(response.body)
-        expect(expected).to have_key('error')
+        expect(response_body).to have_key(:error)
       end
 
       it 'responds with 404 status' do
@@ -149,11 +146,8 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
     end
 
     context 'with an invalid product id' do
-      let(:product) { create(:product) }
-
       subject(:update_product) do
         patch :update, params: { id: 5, product: request_params }
-        product.reload
       end
 
       let(:request_params) { { title: 'new title' } }
@@ -165,8 +159,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
 
       it 'returns an error message' do
         update_product
-        expected = JSON.parse(response.body)
-        expect(expected).to have_key('error')
+        expect(response_body).to have_key(:error)
       end
     end
   end
@@ -200,8 +193,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
 
       it 'responds with an error message' do
         delete_product
-        expected = JSON.parse(response.body)
-        expect(expected).to have_key('error')
+        expect(response_body).to have_key(:error)
       end
 
       it 'responds with 404 status' do

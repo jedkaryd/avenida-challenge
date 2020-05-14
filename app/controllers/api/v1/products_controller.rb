@@ -2,7 +2,7 @@ module Api
   module V1
     class ProductsController < ApplicationController
       def index
-        products = Product.all
+        products = Product.all_visible_ones
         render json: products, status: :ok
       end
 
