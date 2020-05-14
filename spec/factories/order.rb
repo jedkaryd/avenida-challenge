@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :order do
     client
 
-    transient do 
+    transient do
       product { create(:product) }
     end
 

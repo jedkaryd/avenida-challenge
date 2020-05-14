@@ -4,6 +4,6 @@ FactoryBot.define do
     name          { Faker::Name.name }
     dni           { Faker::Number.number(digits: 6) }
     phone_number  { Faker::PhoneNumber.cell_phone }
-    address       { Faker::Address.street_address  }
+    address       { Faker::Address.street_address }
   end
 end
