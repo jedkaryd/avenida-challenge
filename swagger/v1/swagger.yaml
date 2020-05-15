@@ -1,0 +1,477 @@
+---
+openapi: 3.0.1
+info:
+  title: Avenida Challenge API
+  version: v1
+paths:
+  "/api/v1/clients":
+    post:
+      summary: Creates a client
+      tags:
+      - Clients
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content: {}
+        '400':
+          description: bad request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                client:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    dni:
+                      type: integer
+                    email:
+                      type: string
+                    phone_number:
+                      type: text
+                    address:
+                      type: string
+              required:
+              - name
+              - dni
+              - email
+    get:
+      summary: List clients
+      tags:
+      - Clients
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                properties:
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  dni:
+                    type: integer
+                  phone_number:
+                    type: number
+                  address:
+                    type: string
+          application/xml:
+            schema:
+              type: array
+              items:
+                properties:
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  dni:
+                    type: integer
+                  phone_number:
+                    type: number
+                  address:
+                    type: string
+  "/api/v1/clients/{id}":
+    get:
+      summary: Retrieves a client
+      tags:
+      - Clients
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  dni:
+                    type: integer
+                  phone_number:
+                    type: number
+                  address:
+                    type: string
+        '404':
+          description: record not found
+          content: {}
+    patch:
+      summary: Edit a client
+      tags:
+      - Clients
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  client:
+                    type: object
+                    properties:
+                      phone_number:
+                        type: number
+                      address:
+                        type: string
+        '400':
+          description: bad request
+          content: {}
+        '404':
+          description: record not found
+          content: {}
+    delete:
+      summary: Delete a client
+      tags:
+      - Clients
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content: {}
+        '404':
+          description: record not found
+          content: {}
+  "/api/v1/orders":
+    post:
+      summary: Creates an order
+      tags:
+      - Orders
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content: {}
+        '400':
+          description: bad request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order:
+                  type: object
+                  properties:
+                    client_id:
+                      type: integer
+                    product_ids:
+                      type: array
+                      items:
+                        type: integer
+              required:
+              - client_id
+    get:
+      summary: List orders
+      tags:
+      - Orders
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                properties:
+                  type: object
+                  properties:
+                    client_id:
+                      type: integer
+                    product_ids:
+                      type: array
+                      items:
+                        properties:
+                          type: integer
+          application/xml:
+            schema:
+              type: array
+              items:
+                properties:
+                  type: object
+                  properties:
+                    client_id:
+                      type: integer
+                    product_ids:
+                      type: array
+                      items:
+                        properties:
+                          type: integer
+  "/api/v1/orders/{id}":
+    get:
+      summary: Retrieves a order
+      tags:
+      - Orders
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type: object
+                  properties:
+                    client_id:
+                      type: integer
+                    product_ids:
+                      type: array
+                      items:
+                        type: integer
+        '404':
+          description: record not found
+          content: {}
+    patch:
+      summary: Edit a order
+      tags:
+      - Orders
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order:
+                    type: object
+                    properties:
+                      client_id:
+                        type: integer
+                      product_ids:
+                        type: array
+                        items:
+                          type: integer
+        '400':
+          description: bad request
+          content: {}
+        '404':
+          description: record not found
+          content: {}
+    delete:
+      summary: Delete a order
+      tags:
+      - Orders
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content: {}
+        '404':
+          description: record not found
+          content: {}
+  "/api/v1/products":
+    post:
+      summary: Creates a product
+      tags:
+      - Products
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content: {}
+        '400':
+          description: bad request
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    stock:
+                      type: integer
+                    price:
+                      type: number
+                    state:
+                      type: string
+              required:
+              - title
+              - description
+              - stock
+              - price
+              - state
+    get:
+      summary: List products
+      tags:
+      - Products
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                properties:
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  stock:
+                    type: integer
+                  price:
+                    type: number
+                  state:
+                    type: string
+          application/xml:
+            schema:
+              type: array
+              items:
+                properties:
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  stock:
+                    type: integer
+                  price:
+                    type: number
+                  state:
+                    type: string
+  "/api/v1/products/{id}":
+    get:
+      summary: Retrieves a product
+      tags:
+      - Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  stock:
+                    type: integer
+                  price:
+                    type: number
+                  state:
+                    type: string
+        '404':
+          description: record not found
+          content: {}
+    patch:
+      summary: Edit a product
+      tags:
+      - Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      description:
+                        type: string
+        '400':
+          description: bad request
+          content: {}
+        '404':
+          description: record not found
+          content: {}
+    delete:
+      summary: Delete a product
+      tags:
+      - Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content: {}
+        '404':
+          description: record not found
+          content: {}
+servers:
+- url: http://localhost:3000
